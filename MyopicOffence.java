@@ -11,7 +11,7 @@ import main.Board;
 import main.Offence;
 
 
-public class DMOffence extends Offence {
+public class MyopicOffence extends Offence {
     private class Selection {
         public Selection(int position, double rank) {
             this.position = position;

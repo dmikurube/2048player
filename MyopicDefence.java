@@ -4,7 +4,7 @@ import main.Defence;
 import main.Direction;
 
 
-public class DMDefence extends Defence {
+public class MyopicDefence extends Defence {
     static final int N = 2;
 
     public Direction defend(int[] vec, int score) {
