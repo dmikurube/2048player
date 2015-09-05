@@ -1,6 +1,7 @@
 package dmikurube;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +94,12 @@ public class DMOffence extends Offence {
         return finalSelection;
     }
 
+    public static <T extends Comparable<? super T>> List<T> sorted(Collection<T> c) {
+        List<T> list = new ArrayList<T>(c);
+        java.util.Collections.sort(list);
+        return list;
+    }
+
     @Override
     public int offend(int[] field, int score) {
         Random random = new Random();
@@ -122,6 +129,21 @@ public class DMOffence extends Offence {
                 }
             }
         }
+        for (int number: sorted(dict.keySet())) {
+            for (int i: dict.get(number)) {
+                if (dict.containsKey(number / 2)) {
+                    for (int j: dict.get(number / 2)) {
+                        Selection selection = rank(field, 2, i, j);
+                        if (selection != null &&
+                            (finalSelection == null ||
+                             finalSelection.getRank() < selection.getRank())) {
+                            finalSelection = selection;
+                        }
+                    }
+                }
+            }
+        }
+
         if (finalSelection == null) {
             int size = dict.get(0).size();
             if(size > 0) {
