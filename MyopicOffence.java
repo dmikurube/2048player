@@ -39,7 +39,7 @@ public class MyopicOffence extends Offence {
         return false;
     }
 
-    private double nearBig(int[] field, int x, int y) {
+    private double near(int[] field, int x, int y) {
         double rank = 1.0;
 
         int[] dx1 = {0, 1, 0, -1};
@@ -48,10 +48,14 @@ public class MyopicOffence extends Offence {
             int nx = x + dx1[i];
             int ny = y + dy1[i];
             if (nx < 0 || nx > 3 || ny < 0 || ny > 3) { continue; }
-            if (field[nx + ny * 4] > 0) {
+            if (field[nx + ny * 4] == 2) {
+                rank *= 0.4;
+            } else if (field[nx + ny * 4] == 4) {
+                rank *= 0.6;
+            } else if (field[nx + ny * 4] > 4) {
                 rank *= (double)(31 - Integer.numberOfLeadingZeros(field[nx + ny * 4]));
             } else {
-                rank *= 0.5;
+                rank *= 0.7;
             }
         }
 
@@ -61,7 +65,11 @@ public class MyopicOffence extends Offence {
             int nx = x + dx2[i];
             int ny = y + dy2[i];
             if (nx < 0 || nx > 3 || ny < 0 || ny > 3) { continue; }
-            if (field[nx + ny * 4] > 0) {
+            if (field[nx + ny * 4] == 2) {
+                rank *= 0.6;
+            } else if (field[nx + ny * 4] == 4) {
+                rank *= 0.7;
+            } else if (field[nx + ny * 4] > 4) {
                 rank *= (double)(31 - Integer.numberOfLeadingZeros(field[nx + ny * 4])) * 0.25;
             } else {
                 rank *= 0.8;
@@ -84,7 +92,7 @@ public class MyopicOffence extends Offence {
             for (int x = west; x <= east; ++x) {
                 double rateRank = 1.0;
                 if (field[x + y*4] == 0) {
-                    rateRank *= nearBig(field, x, y);
+                    rateRank *= near(field, x, y);
                     if (finalSelection == null || finalSelection.getRank() < baseRank * rateRank) {
                         finalSelection = new Selection(x + y*4, baseRank * rateRank);
                     }
